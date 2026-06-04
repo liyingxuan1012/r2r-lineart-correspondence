@@ -12,26 +12,6 @@ Understanding region-wise correspondences between manga line art images is funda
 
 ---
 
-## Repository Structure
-
-```
-├── model.py                      # LineArtTransformerModel (ViT-B/16 backbone + LoFTR encoder)
-├── data.py                       # Dataset classes (LineArtDataset, PBCLineArtDataset)
-├── train.py                      # Training with DDP
-├── train_PBC.py                  # Training on PaintBucket-Character dataset
-├── test_patch.py                 # Patch-level evaluation (Top-K accuracy, PR curve)
-├── test_patch_with_ap.py         # Patch-level evaluation with Average Precision
-├── test_region_single.py         # Region-level evaluation on a single image pair (with GT)
-├── test_region_batch.py          # Region-level batch evaluation over a dataset
-├── test_region_single_wo_gt.py   # Inference on arbitrary image pairs (no GT required)
-├── loftr_module/
-│   ├── transformer.py            # LoFTR encoder (multi-head attention)
-│   └── linear_attention.py      # Linear and full attention implementations
-└── requirements.txt
-```
-
----
-
 ## Installation
 
 ```bash
