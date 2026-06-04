@@ -1,4 +1,3 @@
-*.png
 *.log
 *.pth
 __pycache__
