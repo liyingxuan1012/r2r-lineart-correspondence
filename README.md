@@ -1,6 +1,6 @@
 # Region-Wise Correspondence Prediction between Manga Line Art Images (CVPR 2026)
 This repository contains the official implementation of our paper: **Region-Wise Correspondence Prediction between Manga Line Art Images**  
-[Paper](https://arxiv.org/abs/2509.09501) | Poster | [Dataset](https://github.com/liyingxuan1012/r2r-lineart-correspondence-dataset)
+[Paper](https://arxiv.org/abs/2509.09501) | [Poster](assets/CVPR2026.pdf) | [Dataset](https://github.com/liyingxuan1012/r2r-lineart-correspondence-dataset)
 
 ## Overview
 

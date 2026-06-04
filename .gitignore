@@ -1,7 +1,6 @@
 *.png
 *.log
 *.pth
-*.pdf
 __pycache__
 results*
 test/
