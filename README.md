@@ -50,7 +50,7 @@ pip install -r requirements.txt
 We use two datasets for training and evaluation:
 
 - **In-house training data** — our internal dataset of manga/animation keyframe pairs with automatically generated region correspondences. See the [dataset repository (coming soon)](#) for the evaluation split and annotation tools.
-- **[PaintBucket-Character (PBC)](https://github.com/WebDT-Research/PaintBucketCharacter)** — a publicly available dataset of anime character illustrations with pixel-level region labels.
+- **[PaintBucket-Character (PBC)](https://github.com/ykdai/BasicPBC)** — a publicly available dataset of anime character illustrations with pixel-level region labels.
 
 The CSV files used by our data loaders follow this format:
 
