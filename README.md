@@ -1,6 +1,6 @@
 # Region-Wise Correspondence Prediction between Manga Line Art Images (CVPR 2026)
 This repository contains the official implementation of our paper: **Region-Wise Correspondence Prediction between Manga Line Art Images**  
-[Paper](https://arxiv.org/abs/2509.09501) | Poster | Dataset
+[Paper](https://arxiv.org/abs/2509.09501) | Poster | [Dataset](https://github.com/liyingxuan1012/r2r-lineart-correspondence-dataset)
 
 ## Overview
 
@@ -49,7 +49,7 @@ pip install -r requirements.txt
 
 We use two datasets for training and evaluation:
 
-- **In-house training data** — our internal dataset of manga/animation keyframe pairs with automatically generated region correspondences. See the [dataset repository (coming soon)](#) for the evaluation split and annotation tools.
+- **In-house training data** — our internal dataset of manga/animation keyframe pairs with automatically generated region correspondences. See the [dataset repository](https://github.com/liyingxuan1012/r2r-lineart-correspondence-dataset) for the evaluation split and annotation tools.
 - **[PaintBucket-Character (PBC)](https://github.com/ykdai/BasicPBC)** — a publicly available dataset of anime character illustrations with pixel-level region labels.
 
 The CSV files used by our data loaders follow this format:
@@ -158,19 +158,12 @@ python test_region_single_wo_gt.py \
 
 We release the **evaluation dataset and annotation tools** in a separate repository:
 
-👉 **Dataset Repository (Coming Soon)**
+👉 **[r2r-lineart-correspondence-dataset](https://github.com/liyingxuan1012/r2r-lineart-correspondence-dataset)**
 
-The dataset repository will include:
-- Test set for evaluation
-- Annotation tools for region correspondence
-
----
-
-## TODO
-
-- [ ] Release evaluation dataset
-- [ ] Release annotation tools
-- [ ] Add detailed documentation
+The dataset repository includes:
+- [`label_correction/GenAI_test/`](https://github.com/liyingxuan1012/r2r-lineart-correspondence-dataset/tree/main/label_correction) — manually corrected GenAI evaluation split with region-correspondence ground truth
+- [`auto_annotation/`](https://github.com/liyingxuan1012/r2r-lineart-correspondence-dataset/tree/main/auto_annotation) — automatic annotation pipeline (SuperPoint + LightGlue keypoint matching + region voting) used to generate training labels
+- [`label_correction/`](https://github.com/liyingxuan1012/r2r-lineart-correspondence-dataset/tree/main/label_correction) — Jupyter notebooks for manual segmentation and correspondence correction
 
 ---
 
