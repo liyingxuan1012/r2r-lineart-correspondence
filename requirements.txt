@@ -1,0 +1,10 @@
+torch
+torchvision
+tqdm
+matplotlib
+seaborn
+opencv-python-headless
+gpustat
+scikit-learn
+scikit-image
+scipy

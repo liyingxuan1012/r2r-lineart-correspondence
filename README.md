@@ -2,7 +2,7 @@
 This repository contains the official implementation of our paper: **Region-Wise Correspondence Prediction between Manga Line Art Images**  
 [Paper](https://arxiv.org/abs/2509.09501) | Poster | Dataset
 
-## 🔍 Overview
+## Overview
 
 <p align="center">
   <img src="assets/teaser.png" width="90%">
@@ -12,38 +12,169 @@ Understanding region-wise correspondences between manga line art images is funda
 
 ---
 
-## 📦 Repository Structure
+## Repository Structure
 
-This repository includes:
-
-- Training and evaluation code  
-- Inference and visualization scripts  
-- Configuration files and experiment settings  
+```
+├── model.py                      # LineArtTransformerModel (ViT-B/16 backbone + LoFTR encoder)
+├── data.py                       # Dataset classes (LineArtDataset, PBCLineArtDataset)
+├── train.py                      # Training with DDP
+├── train_PBC.py                  # Training on PaintBucket-Character dataset
+├── test_patch.py                 # Patch-level evaluation (Top-K accuracy, PR curve)
+├── test_patch_with_ap.py         # Patch-level evaluation with Average Precision
+├── test_region_single.py         # Region-level evaluation on a single image pair (with GT)
+├── test_region_batch.py          # Region-level batch evaluation over a dataset
+├── test_region_single_wo_gt.py   # Inference on arbitrary image pairs (no GT required)
+├── loftr_module/
+│   ├── transformer.py            # LoFTR encoder (multi-head attention)
+│   └── linear_attention.py      # Linear and full attention implementations
+└── requirements.txt
+```
 
 ---
 
-## 📊 Dataset
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yingxuanli/r2r-lineart-correspondence.git
+cd r2r-lineart-correspondence
+
+# Install dependencies (Python >= 3.8, PyTorch >= 2.0 recommended)
+pip install -r requirements.txt
+```
+
+---
+
+## Dataset
+
+We use two datasets for training and evaluation:
+
+- **In-house training data** — our internal dataset of manga/animation keyframe pairs with automatically generated region correspondences. See the [dataset repository (coming soon)](#) for the evaluation split and annotation tools.
+- **[PaintBucket-Character (PBC)](https://github.com/WebDT-Research/PaintBucketCharacter)** — a publicly available dataset of anime character illustrations with pixel-level region labels.
+
+The CSV files used by our data loaders follow this format:
+
+```
+dir,reference,target
+scene_001,frame_01.jpg,frame_02.jpg
+...
+```
+
+---
+
+## Training
+
+### Training on the in-house dataset
+
+```bash
+torchrun --nproc_per_node=NUM_GPUS train.py \
+    --csv_path path/to/pair_frames.csv \
+    --root_lineart path/to/lineart_images \
+    --root_label path/to/label_images \
+    --epochs 30 \
+    --batch_size 64 \
+    --lr 2e-4 \
+    --patch_size 32
+```
+
+### Training on PaintBucket-Character
+
+```bash
+python train_PBC.py \
+    --root_dir path/to/PaintBucket_Char \
+    --epochs 20 \
+    --batch_size 16
+```
+
+---
+
+## Evaluation
+
+### Patch-level evaluation
+
+```bash
+# Top-K accuracy and PR curve
+python test_patch.py \
+    --csv_path path/to/eval_pairs.csv \
+    --root_lineart path/to/lineart_images \
+    --root_label path/to/label_images \
+    --model_path path/to/checkpoint.pth
+
+# With Average Precision (in-house eval set)
+python test_patch_with_ap.py \
+    --csv_path path/to/eval_pairs.csv \
+    --root_lineart path/to/lineart_images \
+    --root_label path/to/label_images \
+    --model_path path/to/checkpoint.pth
+
+# With Average Precision (PBC eval set)
+python test_patch_with_ap.py \
+    --is-pbc \
+    --pbc_root path/to/PaintBucket_Char/train/PaintBucket_Char \
+    --model_path path/to/checkpoint.pth
+```
+
+### Region-level evaluation
+
+```bash
+# Single pair (with GT), in-house dataset
+python test_region_single.py \
+    --csv-path path/to/eval_pairs.csv \
+    --lineart-dir path/to/lineart_images \
+    --labels-dir path/to/label_images \
+    --model-path path/to/checkpoint.pth \
+    --pair-index 0
+
+# Single pair (with GT), PBC mode
+python test_region_single.py \
+    --is-pbc \
+    --pbc-root path/to/PaintBucket_Char/train/PaintBucket_Char \
+    --model-path path/to/checkpoint.pth
+
+# Batch evaluation over the full eval set
+python test_region_batch.py \
+    --csv-path path/to/eval_pairs.csv \
+    --lineart-dir path/to/lineart_images \
+    --labels-dir path/to/label_images \
+    --model-path path/to/checkpoint.pth \
+    --out-dir results/
+```
+
+### Inference without ground truth
+
+Run the model on any pair of line-art images:
+
+```bash
+python test_region_single_wo_gt.py \
+    --ref-img path/to/reference.jpg \
+    --tgt-img path/to/target.jpg \
+    --model-path path/to/checkpoint.pth \
+    --out-dir results/
+```
+
+---
+
+## Dataset Repository
 
 We release the **evaluation dataset and annotation tools** in a separate repository:
 
 👉 **Dataset Repository (Coming Soon)**
 
 The dataset repository will include:
-- Test set for evaluation  
-- Annotation tools for region correspondence   
+- Test set for evaluation
+- Annotation tools for region correspondence
 
 ---
 
-## 🚧 TODO
+## TODO
 
-- [ ] Release training and inference code  
-- [ ] Release dataset  
-- [ ] Release annotation tools  
-- [ ] Add detailed documentation  
+- [ ] Release evaluation dataset
+- [ ] Release annotation tools
+- [ ] Add detailed documentation
 
 ---
 
-## 📌 Citation
+## Citation
 
 If you find this work useful, please consider citing:
 
@@ -54,3 +185,4 @@ If you find this work useful, please consider citing:
   booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
   year={2026}
 }
+```
