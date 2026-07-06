@@ -16,7 +16,7 @@ Understanding region-wise correspondences between manga line art images is funda
 
 ```bash
 # Clone the repository
-git clone https://github.com/yingxuanli/r2r-lineart-correspondence.git
+git clone https://github.com/liyingxuan1012/r2r-lineart-correspondence.git
 cd r2r-lineart-correspondence
 
 # Install dependencies (Python >= 3.8, PyTorch >= 2.0 recommended)
